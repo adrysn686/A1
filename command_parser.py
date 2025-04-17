@@ -6,6 +6,7 @@
 # AUDRES6@UCI.EDU
 # 32241248
 
+import time
 import notebook
 from pathlib import Path
 
@@ -83,7 +84,7 @@ def edit_notebook(command_lst, a_notebook, a_path):
                 try:
                     if i % 2 == 1:
                         if command_lst[i] not in ['-usr', '-pwd', '-bio', '-add', '-del']:
-                            raise CommandNotExistError(f"{command_lst[i]} is not a valid command")
+                            raise CommandNotExistError()
                     if command_lst[i] == '-usr':
                         new_username = command_lst[i+1]
                         a_notebook.username = new_username
@@ -97,15 +98,16 @@ def edit_notebook(command_lst, a_notebook, a_path):
                         a_notebook.bio = new_bio
                         a_notebook.save(str(a_path))
                     elif command_lst[i] == '-add':
-                        new_diary = command_lst[i+1]
+                        diary_info = command_lst[i+1]
+                        new_diary = notebook.Diary(entry = diary_info, timestamp = time.time())
                         a_notebook.add_diary(new_diary)
                         a_notebook.save(str(a_path))
                     elif command_lst[i] == '-del':
                         delete_diary_index = int(command_lst[i+1])
                         a_notebook.del_diary(delete_diary_index)
                         a_notebook.save(str(a_path))
-                except CommandNotExistError as e:
-                    print(f"Error: {e}")
+                except CommandNotExistError:
+                    print("ERROR")
                 except:
                     print("ERROR")
                     break
@@ -117,7 +119,7 @@ def print_notebook(command_lst, a_notebook):
         print("ERROR")
     else:
         if not a_notebook:
-            print('ERROR')
+            print("ERROR")
         else:
             for i in range(len(command_lst)):
                 try:
@@ -133,9 +135,10 @@ def print_notebook(command_lst, a_notebook):
                             diary_info_dict = diary_list[i]
                             print(f"{i}: {diary_info_dict['entry']}")
                     elif command_lst[i] == '-diary':
-                        id = command_lst[i+1]
+                        index = int(command_lst[i+1])
                         diary_list = a_notebook.get_diaries()
-                        print(diary_list[id])
+                        diary_info_dict = diary_list[index]
+                        print(diary_info_dict['entry'])
                     elif command_lst[i] == '-all':
                         print(a_notebook.username)
                         print(a_notebook.password)
@@ -144,7 +147,7 @@ def print_notebook(command_lst, a_notebook):
                         for i in range(len(diary_list)):
                             print(f"{i}: {diary_list[i]}")
                 except:
-                    print('ERROR')
+                    print("ERROR")
                     break
 
 class CommandNotExistError(Exception):

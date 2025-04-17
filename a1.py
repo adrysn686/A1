@@ -15,7 +15,9 @@ def main():
             if command_input == 'Q':
                 break
             command_lst = shlex.split(command_input)
-            command = command_lst[0] 
+            #if len(command_lst)<2:
+                #raise CommandNotExistError()
+            command = command_lst[0]
             if command == 'C':
                 a_notebook, a_path = command_parser.create_notebook(command_lst)
             elif command == 'D':
@@ -28,7 +30,9 @@ def main():
                 command_parser.print_notebook(command_lst, a_notebook)
             else:
                 print("ERROR")
-    except:
+    #except CommandNotExistError:
+        #print("ERROR")
+    except Exception:
         print("ERROR")
 
 if __name__=="__main__":
