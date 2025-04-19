@@ -10,8 +10,11 @@ import time
 import notebook
 from pathlib import Path
 
-def create_notebook(command_lst):
-    if len(command_lst)<2:
+def create_notebook(command_lst: list):
+    if len(command_lst)<4:
+        print("ERROR")
+        return None, None
+    elif command_lst[2] != '-n':
         print("ERROR")
         return None, None
     else:
@@ -31,7 +34,7 @@ def create_notebook(command_lst):
             print(f'{notebook_path.absolute()} CREATED')    
             return new_notebook, notebook_path
         
-def delete_notebook(command_lst):
+def delete_notebook(command_lst: list):
     if len(command_lst)<2:
         print("ERROR")
     else:
@@ -45,7 +48,7 @@ def delete_notebook(command_lst):
             print(f'{path.absolute()} DELETED')
 
     
-def load_notebook(command_lst):
+def load_notebook(command_lst: list):
     if len(command_lst)<2:
         print("ERROR")
     else:
@@ -68,8 +71,8 @@ def load_notebook(command_lst):
             return load_notebook, path
 
 
-def edit_notebook(command_lst, a_notebook, a_path):
-    if len(command_lst)<2:
+def edit_notebook(command_lst: list, a_notebook: notebook, a_path: Path):
+    if len(command_lst)<3:
         print("ERROR")
     else:
         if not a_notebook:
@@ -108,21 +111,30 @@ def edit_notebook(command_lst, a_notebook, a_path):
                         a_notebook.save(str(a_path))
                 except CommandNotExistError:
                     print("ERROR")
+                    break
                 except:
                     print("ERROR")
                     break
                 
 
 
-def print_notebook(command_lst, a_notebook):
+def print_notebook(command_lst: list, a_notebook: notebook):
     if len(command_lst)<2:
         print("ERROR")
     else:
         if not a_notebook:
             print("ERROR")
         else:
-            for i in range(len(command_lst)):
+            diary_command_found = False
+            for i in range(1, len(command_lst)):
                 try:
+                    if diary_command_found == True:
+                        diary_command_found = False
+                        continue
+            
+                    if command_lst[i] not in ['-usr', '-pwd', '-bio', '-diaries', '-all', '-diary']:
+                            raise CommandNotExistError()
+                
                     if command_lst[i] == '-usr':
                         print(a_notebook.username)
                     elif command_lst[i] == '-pwd':
@@ -135,6 +147,7 @@ def print_notebook(command_lst, a_notebook):
                             diary_info_dict = diary_list[i]
                             print(f"{i}: {diary_info_dict['entry']}")
                     elif command_lst[i] == '-diary':
+                        diary_command_found = True
                         index = int(command_lst[i+1])
                         diary_list = a_notebook.get_diaries()
                         diary_info_dict = diary_list[index]
@@ -145,11 +158,14 @@ def print_notebook(command_lst, a_notebook):
                         print(a_notebook.bio)
                         diary_list = a_notebook.get_diaries()
                         for i in range(len(diary_list)):
-                            print(f"{i}: {diary_list[i]}")
+                            diary_info_dict = diary_list[i]
+                            print(f"{i}: {diary_info_dict['entry']}")
+                except CommandNotExistError:
+                    print("ERROR")
+                    break
                 except:
                     print("ERROR")
                     break
 
 class CommandNotExistError(Exception):
     pass 
-

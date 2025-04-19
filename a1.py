@@ -9,8 +9,8 @@ import command_parser
 import shlex
 
 def main():
-    try:
-        while True:
+    while True:
+        try:
             command_input = input('')
             if command_input == 'Q':
                 break
@@ -32,9 +32,8 @@ def main():
                 print("ERROR")
     #except CommandNotExistError:
         #print("ERROR")
-    except Exception:
-        print("ERROR")
+        except Exception:
+            print("ERROR")
 
 if __name__=="__main__":
     main()
-    
