@@ -9,7 +9,9 @@ import command_parser
 import shlex
 
 def main():
-    #
+    '''
+    The main function handles user command input and execution until quit command ('Q') is entered.
+    '''
     while True:
         try:
             command_input = input('')

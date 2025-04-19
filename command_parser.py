@@ -11,9 +11,9 @@ import notebook
 from pathlib import Path
 
 '''
-    Create notebook function creates a new diary notebook with json format in a given directory.
+    Creates a new diary notebook in JSON format within the specified directory.
     Parameters:
-        command list: contains the path and diary name (eg. C "/home/john/ics 32/my notebooks" -n my_diary)
+        command list: Contains the command, path, and diary name elements. (e.g. C "/home/john/ics 32/my notebooks" -n my_diary)
     Return values:
         new_notebook: returns a notebook object created with new username, password, and bio
         notebook_path: returns the notebook path
@@ -43,7 +43,14 @@ def create_notebook(command_lst: list):
             new_notebook.save(str(notebook_path))
             print(f'{notebook_path.absolute()} CREATED')    
             return new_notebook, notebook_path
-        
+
+'''
+    Deletes a notebook file at the specified path.
+    Parameters:
+        command list: Contains the command and notebook path elements. (e.g. D "/home/algol/ics32/lectures/l1/student.json")
+    Return values:
+        None
+'''
 def delete_notebook(command_lst: list):
     if len(command_lst)<2:
         print("ERROR")
@@ -57,7 +64,14 @@ def delete_notebook(command_lst: list):
             path.unlink()
             print(f'{path.absolute()} DELETED')
 
-    
+'''
+    Loads an existing notebook after verifying the username and password.
+    Parameters:
+        command list: Contains the command and notebook path element (e.g. O "/home/algol/ics32/lectures/l1/student.json")
+    Return values:
+        load_notebook: returns the loaded notebook object that will later be passed into the edit and print commands. 
+        path: returns the notebook path
+'''
 def load_notebook(command_lst: list):
     if len(command_lst)<2:
         print("ERROR")
@@ -83,7 +97,17 @@ def load_notebook(command_lst: list):
                 print("ERROR")
             return load_notebook, path
 
-
+'''
+    Edit notebook function allows editing of notebook metadata (username, password, bio) and diary entries
+    after the user creates or loads the notebook.
+    Parameters:
+        command list: contains the command followed by what the user wants to edit and their new input 
+        (e.g. E -usr John -pwd "123 456")
+        a_notebook: The notebook object to modify, obtained from create_notebook or load_notebook functions.
+        a_path: notebook path that is passed in 
+    Return values:
+        None
+'''
 def edit_notebook(command_lst: list, a_notebook: notebook, a_path: Path):
     if len(command_lst)<3:
         print("ERROR")
@@ -130,8 +154,15 @@ def edit_notebook(command_lst: list, a_notebook: notebook, a_path: Path):
                     print("ERROR")
                     break
                 
-
-
+'''
+    Print notebook function allows users to print user's username, password, bio, all their diaries, a single diary,
+    or everything in the notebook.
+    Parameters:
+        command list: contains the command followed by what the user wants to print (e.g. P -bio -usr -diary 0)
+        a_notebook: notebook object is passed in after creating or loading the notebook. 
+    Return values:
+        None
+'''
 def print_notebook(command_lst: list, a_notebook: notebook):
     if len(command_lst)<2:
         print("ERROR")
@@ -143,7 +174,6 @@ def print_notebook(command_lst: list, a_notebook: notebook):
             for i in range(1, len(command_lst)):
                 try:
                     if diary_command_found == True:
-                        #comment
                         diary_command_found = False
                         continue
                     if command_lst[i] not in ['-usr', '-pwd', '-bio', '-diaries', '-all', '-diary']:
