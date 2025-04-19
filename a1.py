@@ -18,7 +18,7 @@ def main():
             if command_input == 'Q':
                 break
             command_lst = shlex.split(command_input)
-            command = command_lst[0]
+            command = (command_lst[0]).upper()
             if command == 'C':
                 a_notebook, a_path = command_parser.create_notebook(command_lst)
             elif command == 'D':
