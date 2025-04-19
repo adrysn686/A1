@@ -123,7 +123,6 @@ def edit_notebook(command_lst: list, a_notebook: notebook, a_path: Path):
             for i in range(len(command_lst)):
                 try:
                     if i % 2 == 1:
-                        #comment
                         if command_lst[i] not in ['-usr', '-pwd', '-bio', '-add', '-del']:
                             raise CommandNotExistError()
                     if command_lst[i] == '-usr':
