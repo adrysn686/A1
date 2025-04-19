@@ -9,14 +9,13 @@ import command_parser
 import shlex
 
 def main():
+    #
     while True:
         try:
             command_input = input('')
             if command_input == 'Q':
                 break
             command_lst = shlex.split(command_input)
-            #if len(command_lst)<2:
-                #raise CommandNotExistError()
             command = command_lst[0]
             if command == 'C':
                 a_notebook, a_path = command_parser.create_notebook(command_lst)
@@ -30,8 +29,7 @@ def main():
                 command_parser.print_notebook(command_lst, a_notebook)
             else:
                 print("ERROR")
-    #except CommandNotExistError:
-        #print("ERROR")
+
         except Exception:
             print("ERROR")
 

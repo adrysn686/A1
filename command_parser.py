@@ -10,6 +10,14 @@ import time
 import notebook
 from pathlib import Path
 
+'''
+    Create notebook function creates a new diary notebook with json format in a given directory.
+    Parameters:
+        command list: contains the path and diary name (eg. C "/home/john/ics 32/my notebooks" -n my_diary)
+    Return values:
+        new_notebook: returns a notebook object created with new username, password, and bio
+        notebook_path: returns the notebook path
+'''
 def create_notebook(command_lst: list):
     if len(command_lst)<4:
         print("ERROR")
@@ -18,17 +26,19 @@ def create_notebook(command_lst: list):
         print("ERROR")
         return None, None
     else:
-        username = input('')
-        password = input('')
-        bio = input('')
         diary_name = command_lst[3]
         path = Path(command_lst[1])
         notebook_path = path / f"{diary_name}.json"
         if notebook_path.exists():
             print("ERROR")
+            return None, None
         elif not path.exists():
             print("ERROR")
+            return None, None
         else:
+            username = input('')
+            password = input('')
+            bio = input('')
             new_notebook = notebook.Notebook(username, password, bio)
             new_notebook.save(str(notebook_path))
             print(f'{notebook_path.absolute()} CREATED')    
@@ -51,12 +61,15 @@ def delete_notebook(command_lst: list):
 def load_notebook(command_lst: list):
     if len(command_lst)<2:
         print("ERROR")
+        return None, None
     else:
         path = Path(command_lst[1])
         if not path.exists():
             print("ERROR")
+            return None, None
         elif path.suffix != ".json":
             print("ERROR")
+            return None, None
         else:
             username = input('')
             password = input('')
@@ -86,6 +99,7 @@ def edit_notebook(command_lst: list, a_notebook: notebook, a_path: Path):
             for i in range(len(command_lst)):
                 try:
                     if i % 2 == 1:
+                        #comment
                         if command_lst[i] not in ['-usr', '-pwd', '-bio', '-add', '-del']:
                             raise CommandNotExistError()
                     if command_lst[i] == '-usr':
@@ -129,9 +143,9 @@ def print_notebook(command_lst: list, a_notebook: notebook):
             for i in range(1, len(command_lst)):
                 try:
                     if diary_command_found == True:
+                        #comment
                         diary_command_found = False
                         continue
-            
                     if command_lst[i] not in ['-usr', '-pwd', '-bio', '-diaries', '-all', '-diary']:
                             raise CommandNotExistError()
                 
