@@ -18,7 +18,7 @@ from pathlib import Path
         new_notebook: returns a notebook object created with new username, password, and bio
         notebook_path: returns the notebook path
 '''
-def create_notebook(command_lst: list):
+def create_notebook(command_lst: list) -> tuple[notebook, Path]: # type: ignore
     if len(command_lst)<4:
         print("ERROR")
         return None, None
@@ -51,7 +51,7 @@ def create_notebook(command_lst: list):
     Return values:
         None
 '''
-def delete_notebook(command_lst: list):
+def delete_notebook(command_lst: list) -> None:
     if len(command_lst)<2:
         print("ERROR")
     else:
@@ -72,7 +72,7 @@ def delete_notebook(command_lst: list):
         load_notebook: returns the loaded notebook object that will later be passed into the edit and print commands. 
         path: returns the notebook path
 '''
-def load_notebook(command_lst: list):
+def load_notebook(command_lst: list) -> tuple[notebook, Path]: # type: ignore
     if len(command_lst)<2:
         print("ERROR")
         return None, None
@@ -108,7 +108,7 @@ def load_notebook(command_lst: list):
     Return values:
         None
 '''
-def edit_notebook(command_lst: list, a_notebook: notebook, a_path: Path):
+def edit_notebook(command_lst: list, a_notebook: notebook, a_path: Path) -> None:
     if len(command_lst)<3:
         print("ERROR")
     else:
@@ -162,7 +162,7 @@ def edit_notebook(command_lst: list, a_notebook: notebook, a_path: Path):
     Return values:
         None
 '''
-def print_notebook(command_lst: list, a_notebook: notebook):
+def print_notebook(command_lst: list, a_notebook: notebook) -> None:
     if len(command_lst)<2:
         print("ERROR")
     else:
